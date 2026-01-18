@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Service 1: The Database
+  stocksync-db:
+    image: mysql:8.0
+    container_name: stocksync-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: stocksyncdb
+    ports:
+      - "3307:3306" # Maps PC port 3307 to Docker port 3306 (Avoids conflict with local MySQL)
+    networks:
+      - stocksync-net
+
+  # Service 2: Your Java App
+  stocksync-app:
+    build: .
+    container_name: stocksync-app
+    ports:
+      - "9090:9090"
+    depends_on:
+      - stocksync-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://stocksync-db:3306/stocksyncdb
+      SERVER_PORT: 9090
+    networks:
+      - stocksync-net
+
+networks:
+  stocksync-net:
+    driver: bridge

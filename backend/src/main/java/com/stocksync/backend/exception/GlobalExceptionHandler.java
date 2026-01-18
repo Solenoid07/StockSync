@@ -1,0 +1,35 @@
+package com.stocksync.backend.exception;
+
+import org.springframework.http.HttpStatus;
+import  org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+
+@RestControllerAdvice//1. listen to all controllers
+
+public class GlobalExceptionHandler {
+
+    //2. if anyone throws runtime exception..run this method..
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, Object>> handleRuntimeException(RuntimeException ex){
+
+
+        //3. create a clean message for each error...
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("timestamp", LocalDateTime.now());
+        errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+        errorResponse.put("error", "Operation Failed");
+        errorResponse.put("message", ex.getMessage());// dynamically takes string from throw new exception and shows ..
+
+       // return it as json with 400 bad request
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+
+    }
+
+
+}
