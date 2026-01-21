@@ -1,7 +1,7 @@
 # --- STAGE 1: BUILD THE APP ---
 # We use a Maven image to build the JAR file inside Render
 FROM maven:3.9.6-eclipse-temurin-21 AS build
-WORKDIR /app
+WORKDIR /appyes.
 
 # Copy the pom.xml and source code
 COPY pom.xml .
@@ -23,3 +23,5 @@ EXPOSE 9090
 
 # Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# we used multi stage build technique..

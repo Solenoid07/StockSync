@@ -23,6 +23,10 @@ import org.springframework.context.annotation.Configuration;
         ),
         servers = {
                 @Server(
+                        description = "Production ENV (Render)",
+                        url = "https://stocksync-2z64.onrender.com"
+                ),
+                @Server(
                         description = "Local ENV",
                         url = "http://localhost:9090"
                 )
